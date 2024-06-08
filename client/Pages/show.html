@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Users</title>
+    <link rel="stylesheet" href="../Style/style.css">
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="innerDiv">
+            <div class="tableDiv">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Hobby</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Users will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            async function fetchUsers() {
+                try {
+                    const response = await fetch('/users/all');
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch users');
+                    }
+
+                    const users = await response.json();
+                    populateTable(users);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while fetching users. Please try again later.');
+                }
+            }
+
+            function populateTable(users) {
+                const tableBody = document.querySelector('table tbody');
+                // Clear existing rows
+                tableBody.innerHTML = '';
+
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    const cellUsername = document.createElement('td');
+                    const cellFirstName = document.createElement('td');
+                    const cellLastName = document.createElement('td');
+                    const cellHobby = document.createElement('td');
+
+                    cellUsername.textContent = user.username;
+                    cellFirstName.textContent = user.details.firstName;
+                    cellLastName.textContent = user.details.lastName;
+                    cellHobby.textContent = user.details.hobby;
+
+                    row.appendChild(cellUsername);
+                    row.appendChild(cellFirstName);
+                    row.appendChild(cellLastName);
+                    row.appendChild(cellHobby);
+
+                    tableBody.appendChild(row);
+                });
+            }
+
+            fetchUsers();
+        });
+    </script>
+</body>
+</html>

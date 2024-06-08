@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete User</title>
+    <link rel="stylesheet" href="../Style/style.css">
+    <style>
+        .errorBox {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="innerDiv">
+            <form id="deleteForm">
+                <input type="text" id="deleteUsername" placeholder="Username" required><br>
+                <button type="submit">DELETE</button>
+            </form>
+        </div>
+    </div>
+    <div id="errorBox" class="errorBox"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            async function submitDeleteForm(event) {
+                event.preventDefault();
+                const username = document.getElementById('deleteUsername').value.trim();
+
+                if (!username) {
+                    showError('Please provide a username to delete.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/users/delete/${username}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        showError('User deleted successfully', false);
+                    } else {
+                        const errorMessage = await response.text();
+                        showError(`Error: ${errorMessage}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError('An error occurred. Please try again later.');
+                }
+            }
+
+            function showError(message, isError = true) {
+                const errorBox = document.getElementById('errorBox');
+                errorBox.style.backgroundColor = isError ? '#f44336' : '#4CAF50';
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+                setTimeout(() => {
+                    errorBox.style.display = 'none';
+                }, 5000);
+            }
+
+            document.getElementById('deleteForm').addEventListener('submit', submitDeleteForm);
+        });
+    </script>
+</body>
+</html>

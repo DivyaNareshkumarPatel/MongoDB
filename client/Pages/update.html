@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update User</title>
+    <link rel="stylesheet" href="../Style/style.css">
+    <style>
+        .errorBox {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="innerDiv">
+            <form id="updateForm">
+                <input type="text" id="updateUsername" placeholder="Username" required><br>
+                <input type="text" id="updateFirstName" placeholder="First name"><br>
+                <input type="text" id="updateLastName" placeholder="Last name"><br>
+                <input type="text" id="updateHobby" placeholder="Hobby"><br>
+                <button type="submit">UPDATE</button>
+            </form>
+        </div>
+    </div>
+    <div id="errorBox" class="errorBox"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            async function submitUpdateForm(event) {
+                event.preventDefault();
+                const username = document.getElementById('updateUsername').value.trim();
+                const firstName = document.getElementById('updateFirstName').value.trim();
+                const lastName = document.getElementById('updateLastName').value.trim();
+                const hobby = document.getElementById('updateHobby').value.trim();
+                const errorBox = document.getElementById('errorBox');
+
+                const body = {};
+                if (firstName) body.firstName = firstName;
+                if (lastName) body.lastName = lastName;
+                if (hobby) body.hobby = hobby;
+
+                if (Object.keys(body).length === 0) {
+                    showError('Please provide at least one field to update.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/users/update/${username}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (response.ok) {
+                        showError('User updated successfully', false);
+                    } else {
+                        const errorMessage = await response.text();
+                        showError(`Error: ${errorMessage}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError('An error occurred. Please try again later.');
+                }
+            }
+
+            function showError(message, isError = true) {
+                const errorBox = document.getElementById('errorBox');
+                errorBox.style.backgroundColor = isError ? '#f44336' : '#4CAF50';
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+                setTimeout(() => {
+                    errorBox.style.display = 'none';
+                }, 5000);
+            }
+
+            document.getElementById('updateForm').addEventListener('submit', submitUpdateForm);
+        });
+    </script>
+</body>
+</html>

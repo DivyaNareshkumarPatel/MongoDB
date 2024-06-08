@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert User</title>
+    <link rel="stylesheet" href="../Style/style.css">
+    <style>
+        .errorBox {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainDiv">
+        <div class="innerDiv">
+            <form id="insertForm">
+                <input type="text" id="insertUsername" placeholder="Username" required>
+                <input type="text" id="insertFirstName" placeholder="First Name" required>
+                <input type="text" id="insertLastName" placeholder="Last Name" required>
+                <input type="text" id="insertHobby" placeholder="Hobby" required>
+                <button type="submit">Insert User</button>
+            </form>
+        </div>
+    </div>
+    <div id="errorBox" class="errorBox"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            async function submitForm(event) {
+                event.preventDefault();
+                const username = document.getElementById('insertUsername').value;
+                const firstName = document.getElementById('insertFirstName').value;
+                const lastName = document.getElementById('insertLastName').value;
+                const hobby = document.getElementById('insertHobby').value;
+                const body = JSON.stringify({ username, firstName, lastName, hobby });
+
+                try {
+                    const response = await fetch('/users/insert', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: body
+                    });
+
+                    if (response.ok) {
+                        showError('User inserted successfully', false);
+                    } else {
+                        const errorMessage = await response.text();
+                        showError(`Error: ${errorMessage}`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError('An error occurred. Please try again later.');
+                }
+            }
+
+            function showError(message, isError = true) {
+                const errorBox = document.getElementById('errorBox');
+                errorBox.style.backgroundColor = isError ? '#f44336' : '#4CAF50';
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+                setTimeout(() => {
+                    errorBox.style.display = 'none';
+                }, 5000);
+            }
+
+            document.getElementById('insertForm').addEventListener('submit', submitForm);
+        });
+    </script>
+</body>
+</html>

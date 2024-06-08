@@ -41,7 +41,7 @@
                 }
 
                 try {
-                    const response = await fetch(`https://mongo-db-api-five.vercel.app/users/delete/${username}`, {
+                    const response = await fetch(`/users/delete/${username}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'

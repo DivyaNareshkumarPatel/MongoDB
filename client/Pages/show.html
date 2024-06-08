@@ -31,7 +31,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             async function fetchUsers() {
                 try {
-                    const response = await fetch('/users/all');
+                    const response = await fetch('https://mongo-db-api-five.vercel.app/users/all');
 
                     if (!response.ok) {
                         throw new Error('Failed to fetch users');

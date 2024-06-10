@@ -9,12 +9,11 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 const PORT = 3000;
 
-// Middleware
 app.use(bodyParser.json());
 app.use(cors({}));
-app.use(express.static(path.join(__dirname, '..', 'Client', 'Pages')));
-app.use('/style', express.static(path.join(__dirname, '..', 'Client', 'Style')));
-app.use('/script', express.static(path.join(__dirname, '..', 'Client', 'Script')));
+app.use(express.static(path.join(__dirname, 'Client', 'Pages')));
+app.use('/style', express.static(path.join(__dirname, 'Client', 'Style')));
+app.use('/script', express.static(path.join(__dirname, 'Client', 'Script')));
 app.get('/', (req, res) => {
     res.send('Welcome to my MongoDB project!');
 });

@@ -14,6 +14,9 @@ app.use(cors({}));
 app.use(express.static(path.join(__dirname, 'Client', 'Pages')));
 app.use('/style', express.static(path.join(__dirname, 'Client', 'Style')));
 app.use('/script', express.static(path.join(__dirname, 'Client', 'Script')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Client', 'Pages', 'index.html'));
+});
 app.use('/users', userRoutes);
 const mongoURI = process.env.DATABASE;
 mongoose.connect(mongoURI, {

@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'client', 'Pages')));
 app.use('/style', express.static(path.join(__dirname, 'client', 'Style')));
 app.use('/script', express.static(path.join(__dirname, 'client', 'Script')));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'Pages', 'index.html'));
+    res.send("Hello")
 });
 app.use('/users', userRoutes);
 const mongoURI = process.env.DATABASE;

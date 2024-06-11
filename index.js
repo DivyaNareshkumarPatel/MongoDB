@@ -8,7 +8,6 @@ const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = 3000;
-
 app.use(bodyParser.json());
 app.use(cors({}));
 app.use(express.static(path.join(__dirname, 'client', 'Pages')));

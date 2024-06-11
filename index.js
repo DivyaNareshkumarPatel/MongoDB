@@ -11,11 +11,11 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(cors({}));
-app.use(express.static(path.join(__dirname, 'Client', 'Pages')));
-app.use('/style', express.static(path.join(__dirname, 'Client', 'Style')));
-app.use('/script', express.static(path.join(__dirname, 'Client', 'Script')));
+app.use(express.static(path.join(__dirname, 'client', 'Pages')));
+app.use('/style', express.static(path.join(__dirname, 'client', 'Style')));
+app.use('/script', express.static(path.join(__dirname, 'client', 'Script')));
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'Client', 'Pages', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client', 'Pages', 'index.html'));
 });
 app.use('/users', userRoutes);
 const mongoURI = process.env.DATABASE;
